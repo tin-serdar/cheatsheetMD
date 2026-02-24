@@ -2,7 +2,6 @@ import SwiftUI
 
 struct EditorView: View {
     @Bindable var cheatsheetManager: CheatsheetManager
-    var onClose: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -17,15 +16,6 @@ struct EditorView: View {
                     .foregroundStyle(.tertiary)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                Spacer()
-                Button {
-                    onClose()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                        .imageScale(.large)
-                }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)

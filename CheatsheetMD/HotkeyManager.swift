@@ -6,7 +6,8 @@ import ApplicationServices
 @MainActor
 final class HotkeyManager {
 
-    var onToggle: (() -> Void)?
+    var onShow: (() -> Void)?
+    var onHide: (() -> Void)?
     var isAccessibilityGranted: Bool = false
 
     private var tapHandler: EventTapHandler?
@@ -16,11 +17,18 @@ final class HotkeyManager {
         guard isAccessibilityGranted else { return }
         guard tapHandler == nil else { return }
 
-        let handler = EventTapHandler { [weak self] in
-            Task { @MainActor [weak self] in
-                self?.onToggle?()
+        let handler = EventTapHandler(
+            onRightCommandDown: { [weak self] in
+                Task { @MainActor [weak self] in
+                    self?.onShow?()
+                }
+            },
+            onRightCommandUp: { [weak self] in
+                Task { @MainActor [weak self] in
+                    self?.onHide?()
+                }
             }
-        }
+        )
         tapHandler = handler
         handler.start()
     }
@@ -40,20 +48,19 @@ final class HotkeyManager {
 
 private final class EventTapHandler: @unchecked Sendable {
 
-    private let onDoubleTap: () -> Void
+    private let onRightCommandDown: () -> Void
+    private let onRightCommandUp: () -> Void
     private var thread: Thread?
     private var runLoopRef: CFRunLoop?
     private var machPort: CFMachPort?
 
-    // Double-press detection state (only accessed from the event tap thread)
-    private var lastRightCommandUpTime: CFAbsoluteTime = 0
     private var rightCommandIsDown: Bool = false
 
-    private static let doublePressThreshold: CFTimeInterval = 0.4
     private static let rightCommandKeyCode: UInt16 = 0x36
 
-    init(onDoubleTap: @escaping () -> Void) {
-        self.onDoubleTap = onDoubleTap
+    init(onRightCommandDown: @escaping () -> Void, onRightCommandUp: @escaping () -> Void) {
+        self.onRightCommandDown = onRightCommandDown
+        self.onRightCommandUp = onRightCommandUp
     }
 
     func start() {
@@ -127,18 +134,10 @@ private final class EventTapHandler: @unchecked Sendable {
 
         if isCommandDown && !rightCommandIsDown {
             rightCommandIsDown = true
+            onRightCommandDown()
         } else if !isCommandDown && rightCommandIsDown {
             rightCommandIsDown = false
-
-            let now = CFAbsoluteTimeGetCurrent()
-            let elapsed = now - lastRightCommandUpTime
-
-            if elapsed < Self.doublePressThreshold && elapsed > 0.05 {
-                lastRightCommandUpTime = 0
-                onDoubleTap()
-            } else {
-                lastRightCommandUpTime = now
-            }
+            onRightCommandUp()
         }
     }
 }
