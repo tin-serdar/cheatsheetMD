@@ -1,17 +1,12 @@
-//
-//  CheatsheetMDApp.swift
-//  CheatsheetMD
-//
-//  Created by Tin on 24.02.2026..
-//
-
 import SwiftUI
 
 @main
 struct CheatsheetMDApp: App {
+    @State private var appState = AppState()
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        MenuBarExtra("CheatsheetMD", systemImage: "doc.text") {
+            MenuBarView(appState: appState)
         }
     }
 }
