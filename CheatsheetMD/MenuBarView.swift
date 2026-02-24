@@ -4,8 +4,8 @@ struct MenuBarView: View {
     let appState: AppState
 
     var body: some View {
-        Button("Edit Cheatsheet") {
-            appState.overlayController.toggle(
+        Button("Show Cheatsheet") {
+            appState.overlayController.show(
                 cheatsheetManager: appState.cheatsheetManager
             )
         }

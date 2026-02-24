@@ -18,12 +18,12 @@ final class HotkeyManager {
         guard tapHandler == nil else { return }
 
         let handler = EventTapHandler(
-            onRightCommandDown: { [weak self] in
+            onShow: { [weak self] in
                 Task { @MainActor [weak self] in
                     self?.onShow?()
                 }
             },
-            onRightCommandUp: { [weak self] in
+            onHide: { [weak self] in
                 Task { @MainActor [weak self] in
                     self?.onHide?()
                 }
@@ -48,19 +48,22 @@ final class HotkeyManager {
 
 private final class EventTapHandler: @unchecked Sendable {
 
-    private let onRightCommandDown: () -> Void
-    private let onRightCommandUp: () -> Void
+    private let onShow: () -> Void
+    private let onHide: () -> Void
     private var thread: Thread?
     private var runLoopRef: CFRunLoop?
     private var machPort: CFMachPort?
 
     private var rightCommandIsDown: Bool = false
+    private var lastRightCommandDownTime: CFAbsoluteTime = 0
+    private var isShowing: Bool = false
 
+    private static let doublePressThreshold: CFTimeInterval = 0.4
     private static let rightCommandKeyCode: UInt16 = 0x36
 
-    init(onRightCommandDown: @escaping () -> Void, onRightCommandUp: @escaping () -> Void) {
-        self.onRightCommandDown = onRightCommandDown
-        self.onRightCommandUp = onRightCommandUp
+    init(onShow: @escaping () -> Void, onHide: @escaping () -> Void) {
+        self.onShow = onShow
+        self.onHide = onHide
     }
 
     func start() {
@@ -133,11 +136,27 @@ private final class EventTapHandler: @unchecked Sendable {
         let isCommandDown = flags.contains(.maskCommand)
 
         if isCommandDown && !rightCommandIsDown {
+            // Right Command pressed down
             rightCommandIsDown = true
-            onRightCommandDown()
+
+            let now = CFAbsoluteTimeGetCurrent()
+            let elapsed = now - lastRightCommandDownTime
+
+            if elapsed < Self.doublePressThreshold && elapsed > 0.05 {
+                // Double press detected — show
+                isShowing = true
+                onShow()
+            }
+
+            lastRightCommandDownTime = now
         } else if !isCommandDown && rightCommandIsDown {
+            // Right Command released
             rightCommandIsDown = false
-            onRightCommandUp()
+
+            if isShowing {
+                isShowing = false
+                onHide()
+            }
         }
     }
 }

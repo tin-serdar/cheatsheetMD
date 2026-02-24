@@ -12,9 +12,13 @@ final class AppState {
     init() {
         cheatsheetManager.load()
 
-        hotkeyManager.onToggle = { [weak self] in
+        hotkeyManager.onShow = { [weak self] in
             guard let self else { return }
-            self.overlayController.toggle(cheatsheetManager: self.cheatsheetManager)
+            self.overlayController.show(cheatsheetManager: self.cheatsheetManager)
+        }
+        hotkeyManager.onHide = { [weak self] in
+            guard let self else { return }
+            self.overlayController.hide()
         }
 
         hotkeyManager.start()
