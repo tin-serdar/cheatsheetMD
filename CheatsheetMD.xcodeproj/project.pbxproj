@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2FD75F3F2F4F197E0032753E /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD75F3E2F4F197E0032753E /* Markdown */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		2FD75F232F4D8E740032753E /* CheatsheetMD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CheatsheetMD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FD75F3F2F4F197E0032753E /* Markdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = CheatsheetMD;
 			packageProductDependencies = (
+				2FD75F3E2F4F197E0032753E /* Markdown */,
 			);
 			productName = CheatsheetMD;
 			productReference = 2FD75F232F4D8E740032753E /* CheatsheetMD.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 2FD75F1A2F4D8E740032753E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2FD75F3D2F4F197E0032753E /* XCRemoteSwiftPackageReference "swift-markdown" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2FD75F242F4D8E740032753E /* Products */;
 			projectDirPath = "";
@@ -325,6 +334,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2FD75F3D2F4F197E0032753E /* XCRemoteSwiftPackageReference "swift-markdown" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftlang/swift-markdown";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2FD75F3E2F4F197E0032753E /* Markdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FD75F3D2F4F197E0032753E /* XCRemoteSwiftPackageReference "swift-markdown" */;
+			productName = Markdown;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2FD75F1B2F4D8E740032753E /* Project object */;
 }
