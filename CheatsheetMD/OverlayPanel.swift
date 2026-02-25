@@ -36,10 +36,14 @@ final class OverlayPanel: NSPanel {
 final class OverlayPanelController {
 
     private var panel: OverlayPanel?
+    private var previousApp: NSRunningApplication?
     private(set) var isVisible: Bool = false
 
     func show(cheatsheetManager: CheatsheetManager) {
         guard let screen = NSScreen.main else { return }
+
+        // Remember the currently active app so we can restore focus later
+        previousApp = NSWorkspace.shared.frontmostApplication
 
         // Reload file from disk each time (user may have edited externally)
         cheatsheetManager.load()
@@ -64,6 +68,10 @@ final class OverlayPanelController {
     func hide() {
         panel?.orderOut(nil)
         isVisible = false
+
+        // Restore focus to the previously active app
+        previousApp?.activate()
+        previousApp = nil
     }
 
     private func createPanel(frame: NSRect, sections: [CheatsheetSection]) {
