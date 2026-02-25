@@ -41,6 +41,10 @@ final class OverlayPanelController {
     func show(cheatsheetManager: CheatsheetManager) {
         guard let screen = NSScreen.main else { return }
 
+        // Reload file from disk each time (user may have edited externally)
+        cheatsheetManager.load()
+        let sections = CheatsheetParser.parse(cheatsheetManager.content)
+
         let screenFrame = screen.visibleFrame
         let width = screenFrame.width * 0.95
         let height = screenFrame.height * 0.95
@@ -48,11 +52,8 @@ final class OverlayPanelController {
         let y = screenFrame.origin.y + (screenFrame.height - height) / 2
         let frame = NSRect(x: x, y: y, width: width, height: height)
 
-        if panel == nil {
-            createPanel(frame: frame, cheatsheetManager: cheatsheetManager)
-        } else {
-            panel?.setFrame(frame, display: false)
-        }
+        // Recreate panel each time to reflect latest content
+        createPanel(frame: frame, sections: sections)
 
         guard let panel else { return }
         panel.makeKeyAndOrderFront(nil)
@@ -65,13 +66,14 @@ final class OverlayPanelController {
         isVisible = false
     }
 
-    private func createPanel(frame: NSRect, cheatsheetManager: CheatsheetManager) {
+    private func createPanel(frame: NSRect, sections: [CheatsheetSection]) {
         let panel = OverlayPanel(contentRect: frame)
 
-        let editorView = EditorView(cheatsheetManager: cheatsheetManager)
+        let cheatsheetView = CheatsheetView(sections: sections)
+            .background(Color(red: 0.97, green: 0.96, blue: 0.93))
             .clipShape(RoundedRectangle(cornerRadius: 12))
 
-        let hostingView = NSHostingView(rootView: editorView)
+        let hostingView = NSHostingView(rootView: cheatsheetView)
         hostingView.frame = NSRect(origin: .zero, size: frame.size)
         hostingView.autoresizingMask = [.width, .height]
 

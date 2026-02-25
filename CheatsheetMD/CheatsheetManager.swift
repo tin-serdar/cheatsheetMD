@@ -6,8 +6,6 @@ final class CheatsheetManager {
     let filePath: URL
     var content: String = ""
 
-    private var saveTask: Task<Void, Never>?
-
     static let defaultDirectory: URL = {
         FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent(".config/cheatsheetmd", isDirectory: true)
@@ -31,24 +29,7 @@ final class CheatsheetManager {
         if FileManager.default.fileExists(atPath: filePath.path) {
             content = (try? String(contentsOf: filePath, encoding: .utf8)) ?? ""
         } else {
-            content = """
-            # My Cheatsheet
-
-            Start typing your shortcuts and notes here...
-
-            ## Example
-            - **Cmd + C** — Copy
-            - **Cmd + V** — Paste
-            """
-            saveToDisk()
-        }
-    }
-
-    func scheduleSave() {
-        saveTask?.cancel()
-        saveTask = Task {
-            try? await Task.sleep(for: .milliseconds(300))
-            guard !Task.isCancelled else { return }
+            content = defaultContent
             saveToDisk()
         }
     }
@@ -56,4 +37,45 @@ final class CheatsheetManager {
     private func saveToDisk() {
         try? content.write(to: filePath, atomically: true, encoding: .utf8)
     }
+
+    private let defaultContent = """
+## General
+- **⌘ C** — Copy
+- **⌘ V** — Paste
+- **⌘ X** — Cut
+- **⌘ Z** — Undo
+- **⌘ ⇧ Z** — Redo
+- **⌘ A** — Select All
+- **⌘ F** — Find
+
+## Files
+- **⌘ N** — New
+- **⌘ O** — Open
+- **⌘ S** — Save
+- **⌘ ⇧ S** — Save As
+- **⌘ W** — Close Window
+- **⌘ Q** — Quit
+
+## Navigation
+- **⌘ T** — New Tab
+- **⌘ ⇧ T** — Reopen Closed Tab
+- **⌘ L** — Focus Address Bar
+- **⌘ [** — Go Back
+- **⌘ ]** — Go Forward
+
+## Window
+- **⌘ M** — Minimize
+- **⌘ H** — Hide App
+- **⌘ ⌥ H** — Hide Others
+- **⌘ `** — Cycle Windows
+- **⌃ ⌘ F** — Toggle Fullscreen
+
+## Screenshots
+- **⌘ ⇧ 3** — Capture Screen
+- **⌘ ⇧ 4** — Capture Selection
+- **⌘ ⇧ 5** — Screenshot Toolbar
+
+## Spotlight
+- **⌘ Space** — Open Spotlight
+"""
 }

@@ -75,21 +75,32 @@ private struct ItemView: View {
     let item: CheatsheetItem
 
     var body: some View {
-        item.segments.reduce(Text("")) { result, segment in
+        Text(attributedString)
+            .font(.system(.callout))
+            .foregroundStyle(.primary.opacity(0.85))
+    }
+
+    private var attributedString: AttributedString {
+        var result = AttributedString()
+        for segment in item.segments {
+            var part: AttributedString
             switch segment {
             case .plain(let str):
-                return result + Text(str)
+                part = AttributedString(str)
             case .bold(let str):
-                return result + Text(str).bold()
+                part = AttributedString(str)
+                part.inlinePresentationIntent = .stronglyEmphasized
             case .italic(let str):
-                return result + Text(str).italic()
+                part = AttributedString(str)
+                part.inlinePresentationIntent = .emphasized
             case .code(let str):
-                return result + Text(str)
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundColor(.accentColor)
+                part = AttributedString(str)
+                part.inlinePresentationIntent = .code
+                part.font = .system(.callout, design: .monospaced)
+                part.foregroundColor = .accentColor
             }
+            result.append(part)
         }
-        .font(.system(.callout))
-        .foregroundStyle(.primary.opacity(0.85))
+        return result
     }
 }
