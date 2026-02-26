@@ -15,14 +15,23 @@ struct CheatsheetView: View {
             let columns = columnCount > 0 ? columnCount : max(1, Int(geometry.size.width / 280))
             let distributed = distributeSections(sections, into: columns)
 
-            HStack(alignment: .top, spacing: 24) {
-                ForEach(Array(distributed.enumerated()), id: \.offset) { _, column in
+            HStack(alignment: .top, spacing: 0) {
+                ForEach(Array(distributed.enumerated()), id: \.offset) { colIndex, column in
+                    if colIndex > 0 {
+                        Divider()
+                            .overlay(Color.black.opacity(0.1))
+                    }
                     VStack(alignment: .leading, spacing: 16) {
-                        ForEach(column) { section in
+                        ForEach(Array(column.enumerated()), id: \.element.id) { index, section in
+                            if index > 0 {
+                                Divider()
+                                    .overlay(Color.black.opacity(0.1))
+                            }
                             SectionView(section: section)
                         }
                         Spacer(minLength: 0)
                     }
+                    .padding(.horizontal, 20)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }

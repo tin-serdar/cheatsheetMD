@@ -54,7 +54,7 @@ Supports: `## Headings` (sections), `- List items`, `**bold**`, `*italic*`, `` `
 
 ## Requirements
 
-- macOS 15+
+- macOS 14+ (Sonoma)
 - **Accessibility permission** — required for the CGEvent tap to detect the right Command key globally. The app prompts on first launch.
 - **App Sandbox disabled** — CGEvent taps and `~/.config/` file access require running outside the sandbox.
 

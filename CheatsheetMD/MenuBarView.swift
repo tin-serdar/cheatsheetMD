@@ -10,10 +10,14 @@ struct MenuBarView: View {
         }
         .keyboardShortcut("e", modifiers: .command)
 
-        Button("Show Cheatsheet") {
-            appState.overlayController.show(
-                cheatsheetManager: appState.cheatsheetManager
-            )
+        Button(appState.overlayController.isVisible ? "Hide Cheatsheet" : "Show Cheatsheet") {
+            if appState.overlayController.isVisible {
+                appState.overlayController.hide()
+            } else {
+                appState.overlayController.show(
+                    cheatsheetManager: appState.cheatsheetManager
+                )
+            }
         }
 
         Divider()

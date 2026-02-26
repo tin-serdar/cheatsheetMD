@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		2FD75F3F2F4F197E0032753E /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD75F3E2F4F197E0032753E /* Markdown */; };
+		2FD75F452F4F44330032753E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2FD75F442F4F44330032753E /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2FD75F232F4D8E740032753E /* CheatsheetMD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CheatsheetMD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FD75F442F4F44330032753E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -39,6 +41,7 @@
 			children = (
 				2FD75F252F4D8E740032753E /* CheatsheetMD */,
 				2FD75F242F4D8E740032753E /* Products */,
+				2FD75F442F4F44330032753E /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +121,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FD75F452F4F44330032753E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,11 +268,13 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.inksail.CheatsheetMD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -294,11 +300,13 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.inksail.CheatsheetMD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
